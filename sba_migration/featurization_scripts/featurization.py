@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import pgeocode
+import os
 from typing import Dict, Optional, Tuple
 
 from tabular.entity_tagging import get_stage_subset
@@ -15,6 +16,7 @@ from tabular.target_encoding import (
     transform_with_encoder,
 )
 from tabular.feature_space import select_model_features, project_feature_space
+from tabular.feature_space import plot_feature_selection_knee_curve
 
 
 STATE_CENTROIDS: Dict[str, Tuple[float, float]] = {
@@ -91,6 +93,23 @@ def _normalize_state_code(state_value: str) -> Optional[str]:
     if len(val) == 2 and val.isalpha():
         return val.upper()
     return STATE_NAME_TO_ABBR.get(val.lower())
+
+
+def _borrower_geo_drop_filter(context: dict) -> list[str]:
+    """Returns borrower geo source columns that should not be treated as categorical features."""
+    data = context.get("data")
+    if data is None or data.empty:
+        return []
+
+    geo_subset = get_stage_subset(context, entity="geographic", sub_filter="Borrower")
+    if geo_subset is None or geo_subset.empty:
+        geo_subset = data
+
+    geo_like_cols = [
+        c for c in geo_subset.columns
+        if str(c).lower().strip() not in {"borrower_latitude", "borrower_longitude"}
+    ]
+    return list(dict.fromkeys(geo_like_cols))
 
 def record_id_definition(context: dict, stage_cfg: dict) -> pd.DataFrame:
     """
@@ -185,7 +204,8 @@ def prepare_categorical_data(context: dict, stage_cfg: dict) -> pd.DataFrame:
     if data is None or data.empty:
         return pd.DataFrame()
 
-    drop_filter = stage_cfg.get("drop_filter", [])
+    drop_filter = list(stage_cfg.get("drop_filter", []))
+    drop_filter.extend(_borrower_geo_drop_filter(context))
     cat_subset = get_categorical_subset(context, drop_filter=drop_filter)
     if cat_subset.empty:
         cat_subset = pd.DataFrame(index=data.index)
@@ -265,7 +285,8 @@ def low_count_featurization_of_cat_vars(context: dict, stage_cfg: dict) -> pd.Da
     if data is None or data.empty:
         return pd.DataFrame()
 
-    drop_filter = stage_cfg.get("drop_filter", [])
+    drop_filter = list(stage_cfg.get("drop_filter", []))
+    drop_filter.extend(_borrower_geo_drop_filter(context))
     cat_subset = get_categorical_subset(context, drop_filter=drop_filter)
 
     if cat_subset.empty:
@@ -441,8 +462,30 @@ def target_encode_categorical_vars(context: dict, stage_cfg: dict) -> pd.DataFra
     if train_df.empty:
         raise ValueError("Train split is empty; cannot fit target encoder.")
 
-    exclude = [target_col, split_col, "loanstatus"]
-    cat_cols = select_categorical_columns(data, exclude_cols=exclude)
+    exclude_cols = list(stage_cfg.get("exclude_cols", []))
+    exclude_cols.extend(list(stage_cfg.get("drop_filter", [])))
+    exclude_name_patterns = list(stage_cfg.get("exclude_name_patterns", []))
+    exclude_cols.extend(_borrower_geo_drop_filter(context))
+    if not exclude_cols and not exclude_name_patterns:
+        raise ValueError(
+            "Target encoding requires an explicit exclusion policy. "
+            "Set 'exclude_cols' and/or 'exclude_name_patterns' in stage config."
+        )
+    for required_exclude in [target_col, split_col]:
+        if required_exclude not in exclude_cols:
+            exclude_cols.append(required_exclude)
+
+    cat_cols = select_categorical_columns(
+        data,
+        exclude_cols=exclude_cols,
+        exclude_name_patterns=exclude_name_patterns,
+    )
+
+    # If a rarity-encoded categorical exists (e.g., x_rcs), skip encoding its raw base (x).
+    rcs_bases = {c[:-4] for c in cat_cols if c.endswith("_rcs")}
+    if rcs_bases:
+        cat_cols = [c for c in cat_cols if c not in rcs_bases]
+
     if not cat_cols:
         return pd.DataFrame(index=data.index)
 
@@ -477,6 +520,13 @@ def harmonize_and_project_feature_space(context: dict, stage_cfg: dict) -> pd.Da
     split_col = stage_cfg.get("split_col", "dataset_split")
     partition_col = stage_cfg.get("output_partition_col", "dataset_partition")
     min_unique = int(stage_cfg.get("min_unique", 2))
+    exclude_candidate_name_patterns = list(stage_cfg.get("exclude_candidate_name_patterns", []))
+    exclude_candidate_cols = set(stage_cfg.get("exclude_candidate_cols", []))
+    if not exclude_candidate_cols and not exclude_candidate_name_patterns:
+        raise ValueError(
+            "Feature-space harmonization requires an explicit candidate exclusion policy. "
+            "Set 'exclude_candidate_cols' and/or 'exclude_candidate_name_patterns' in stage config."
+        )
     resolver = context.get("resolver")
     if resolver is None:
         raise ValueError("PathCoordinator resolver missing from context.")
@@ -490,6 +540,8 @@ def harmonize_and_project_feature_space(context: dict, stage_cfg: dict) -> pd.Da
         c for c in data.columns
         if c.endswith("_te") or c.endswith("_rcs") or pd.api.types.is_numeric_dtype(data[c])
     ]
+    if exclude_candidate_cols:
+        candidate_cols = [c for c in candidate_cols if c not in exclude_candidate_cols]
     for reserved in [target_col]:
         if reserved in candidate_cols:
             candidate_cols.remove(reserved)
@@ -509,11 +561,42 @@ def harmonize_and_project_feature_space(context: dict, stage_cfg: dict) -> pd.Da
         tree_max_depth=resolver.feature_selection_tree_max_depth,
         tree_subsample=resolver.feature_selection_tree_subsample,
         tree_random_state=resolver.feature_selection_tree_random_state,
+        exclude_candidate_name_patterns=exclude_candidate_name_patterns,
+        top_k_mode=resolver.feature_selection_top_k_mode,
+        top_k_min=resolver.feature_selection_top_k_min,
+        top_k_min_ratio=resolver.feature_selection_top_k_min_ratio,
+        top_k_max=resolver.feature_selection_top_k_max,
+        target_feature_count=resolver.feature_selection_target_feature_count,
+        kneedle_sensitivity=resolver.feature_selection_kneedle_sensitivity,
+        kneedle_curve=resolver.feature_selection_kneedle_curve,
+        kneedle_direction=resolver.feature_selection_kneedle_direction,
+        require_kneedle=resolver.feature_selection_require_kneedle,
+        diagnostics_out=context.setdefault("feature_selection_diagnostics", {}),
     )
     if not selected_features:
         raise ValueError("No features selected for model space projection.")
 
     context["selected_features"] = selected_features
+
+    diagnostics = context.get("feature_selection_diagnostics", {})
+    importance_series = diagnostics.get("importance_series")
+    selected_k = diagnostics.get("selected_k", len(selected_features))
+    print(
+        "   📊 Feature selection summary: "
+        f"candidates={len(candidate_cols)}, selected={len(selected_features)}, "
+        f"k={int(selected_k)}, mode={diagnostics.get('top_k_mode', 'unknown')}"
+    )
+    if importance_series is not None and len(importance_series) > 0:
+        knee_curve_file = stage_cfg.get("knee_curve_file", "feature_selection_knee_curve.png")
+        knee_curve_path = os.path.join(os.path.dirname(resolver.featurized_dataset_path), knee_curve_file)
+        plot_feature_selection_knee_curve(
+            importance_series=importance_series,
+            selected_k=int(selected_k),
+            output_path=knee_curve_path,
+            title="SBA Feature Importance Knee Curve",
+        )
+        context["feature_selection_knee_curve_path"] = knee_curve_path
+        print(f"   🖼️ Knee curve saved: {knee_curve_path}")
 
     modeled_features = project_feature_space(data, selected_features, fill_value=0.0)
     modeled_features[target_col] = data[target_col]
