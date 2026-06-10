@@ -1,5 +1,5 @@
 # 📑 Data Dictionary: Provisional Entity Assignment Report
-**Generation Timestamp:** `2026-06-06 11:19:30`
+**Generation Timestamp:** `2026-06-09 13:19:56`
 **Source Blueprint:** `sba_dd.csv`
 
 ### 🏗️ Structural Assessment

@@ -7,4 +7,14 @@ wheels/
 *.egg-info
 
 # Virtual environments
-.venv
+.venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Large/generated dataset artifacts (do not commit)
+data/sba_loans_raw.csv
+data/dd_cleaner/sba_loans_raw_clean.csv
+data/dd_cleaner/sba_loans_user_cleaned.csv
+data/featurization/featurized_data.csv
+data/featurization/model_ready_numeric_data.csv
