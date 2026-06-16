@@ -38,7 +38,7 @@ The operational recipe for `dd_parser_cleaner` is as follows:
 8. **Handshake**: Review `parser_cleaner_handshake.md` for schema verification.
 9. **Baseline**: Review the Null Profile to understand raw data conditions.
 10. **Recommendations**: Review `cleaning_recommendations.md` for AI-driven insights.
-11. **Access**: Use the example notebook to load the Clean Baseline dataset.
+11. **Access**: Use the example notebook (imperative_migration_example.ipynb) to see how to load and view the "Clean Baseline" dataset.
 12. **Modify**: Implement domain-specific cleaning and featurization in your notebook.
 
 The first 7 steps are already completed, and we have an [example notebook](../notebooks/clean_sba_dataset.ipynb) that demonstrates steps 11 and 12. In the next section, we review the outputs that support this analysis.
