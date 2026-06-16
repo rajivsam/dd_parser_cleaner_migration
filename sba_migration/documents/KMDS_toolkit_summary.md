@@ -6,6 +6,8 @@ KMDS is a toolkit of related packages and components that support enterprise-gra
 
 KMDS transforms analytical projects from collections of files, notebooks, and documents into a queryable institutional knowledge asset. The resulting knowledge can be accessed through agents, reused by future teams, and preserved even as personnel change over time.
 
+Most organizations have documentation. Few organizations have accessible institutional knowledge. Critical analytical decisions are often distributed across notebooks, repositories, documents, tickets, and the memories of individual contributors. KMDS addresses this problem by capturing analytical context as structured artifacts that can be queried, audited, and reused throughout the lifecycle of a machine learning system.
+
 This repository demonstrates the KMDS pattern through a set of packages that each handle a distinct stage of the workflow:
 
 - data ingestion and semantic tagging with `dd-parser-cleaner`
@@ -141,7 +143,7 @@ KMDS and its supporting packages make the ML production process simple and trans
 
 `kmds-data-helper` can convert the repository into a knowledge graph by ingesting repository artifacts and helper outputs, then translating the findings into a KMDS `project_knowledge_graph.xml`.
 
-The really cool side effect of using the tools in the KMDS ecosystem is that the individual tool kit components generate the documentation for the project. You can then use the `kmds-data-helper` to use these artifacts, including anything the data scientist authored, into a KMDS knowledge graph.
+The really nice consequence of using the tools in the KMDS ecosystem is that the individual tool kit components generate the documentation for the project. You can then use the `kmds-data-helper` to use these artifacts, including anything the data scientist authored, into a KMDS knowledge graph.
 
 This conversion makes the process queryable in an ad hoc way:
 
@@ -153,6 +155,8 @@ This conversion makes the process queryable in an ad hoc way:
 The knowledge graph thus becomes a transparent, searchable representation of the ML product lifecycle.
 
 ![KMDS knowledge graph screenshot](../images/kmds-sba-migration_kg.png){width=85%}
+
+The long-term asset is not the agent itself. The long-term asset is the structured analytical knowledge captured by the workflow. Because this knowledge is preserved independently of any particular LLM or agent framework, organizations retain ownership of their analytical reasoning and can recreate or replace agents as technologies evolve.
 
 ## Simplicity and transparency of ML production
 
