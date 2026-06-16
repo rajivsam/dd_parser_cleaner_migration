@@ -6,7 +6,7 @@ KMDS is a toolkit of related packages and components that support enterprise-gra
 
 KMDS transforms analytical projects from collections of files, notebooks, and documents into a queryable institutional knowledge asset. The resulting knowledge can be accessed through agents, reused by future teams, and preserved even as personnel change over time.
 
-Most organizations have documentation. Few organizations have accessible institutional knowledge. Critical analytical decisions are often distributed across notebooks, repositories, documents, tickets, and the memories of individual contributors. KMDS addresses this problem by capturing analytical context as structured artifacts that can be queried, audited, and reused throughout the lifecycle of a machine learning system.
+Most organizations have documentation. Few organizations have accessible institutional knowledge. Critical analytical decisions are often distributed across notebooks, repositories, documents, tickets, and the memories of individual contributors. KMDS addresses this problem by capturing analytical context as structured artifacts that can be queried, audited, and reused throughout the lifecycle of a machine learning system. As analytical systems evolve, understanding why a decision was made often becomes more difficult than understanding what decision was made.
 
 This repository demonstrates the KMDS pattern through a set of packages that each handle a distinct stage of the workflow:
 
