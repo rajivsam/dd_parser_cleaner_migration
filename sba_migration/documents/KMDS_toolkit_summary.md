@@ -100,7 +100,7 @@ The result of this workflow is a **Design Blueprint**—an expert prompt that th
 PROBLEM CHARACTERISTICS:
 - Task: Tabular Classification (Loan Default)
 - Imbalance: Moderate (SBA Default Ratios)
-- Priority: High Interpretability
+- Priority: High Accuracy
 
 DESIGN GUIDELINES:
 1. Model: Use a Cost-Sensitive Gradient Boosted Tree with isotonic calibration.
@@ -109,7 +109,7 @@ DESIGN GUIDELINES:
 
 SUGGESTED AI ASSISTANT PROMPT:
 "I am building an Early Warning System for SBA loans.
-Following KMDS Governance for moderate imbalance and high interpretability,
+Following KMDS Governance for moderate imbalance and high accuracy,
 please draft a training script using XGBoost with scale_pos_weight
 and include a calibration step using Isotonic Regression..."
 ====================================================================
