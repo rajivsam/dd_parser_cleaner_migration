@@ -156,7 +156,7 @@ The knowledge graph thus becomes a transparent, searchable representation of the
 
 ![KMDS knowledge graph screenshot](../images/kmds-sba-migration_kg.png){width=85%}
 
-The long-term asset is not the agent itself. The long-term asset is the structured analytical knowledge captured by the workflow. Because this knowledge is preserved independently of any particular LLM or agent framework, organizations retain ownership of their analytical reasoning and can recreate or replace agents as technologies evolve.
+The long-term asset is not the agent itself. The long-term asset is the structured analytical knowledge captured by the workflow. Because this knowledge is preserved independently of any particular LLM or agent framework, organizations retain ownership of their analytical reasoning and can recreate or replace agents as technologies evolve. Because the analytical decisions, assumptions, and artifacts are captured as structured knowledge, organizations are less dependent on the continued availability of individual contributors. Future teams can query and reuse the reasoning behind prior decisions rather than reconstructing them from notebooks, documents, or institutional memory.
 
 ## Simplicity and transparency of ML production
 
