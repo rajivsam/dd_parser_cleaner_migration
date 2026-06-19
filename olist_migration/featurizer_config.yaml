@@ -1,5 +1,5 @@
 working_dir: /home/rajiv/programming/kmds_migration/olist_migration
-structural_type: cross-sectional
+structural_type: longitudinal
 country_code: br
 raw_data_dir: data
 orders_file: olist_orders_dataset_raw.csv
