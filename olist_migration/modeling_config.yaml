@@ -1,0 +1,25 @@
+working_dir: /home/rajiv/programming/kmds_migration/olist_migration
+index_column: woy
+model_ready_data_file: SP_2017_freq_prod_weekly_sales_prepared.csv
+featurization_output_dir: "."
+modeling_output_dir: models
+
+data:
+  working_dir: /home/rajiv/programming/kmds_migration/olist_migration
+  index_column: woy
+  model_ready_data_file: SP_2017_freq_prod_weekly_sales_prepared.csv
+  featurization_output_dir: "."
+  modeling_output_dir: models
+
+project:
+  name: "olist_sp2017_clustering"
+  experiment_version: "0.1.0"
+  task_type: "CLUSTERING"
+  description: "Spectral co-clustering for Olist SP 2017 weekly product activity"
+
+algorithm:
+  model_family: spectral_coclustering
+  n_clusters: 16
+  embedding_dim: 4
+  random_state: 42
+  use_spectral_gap_analysis: true

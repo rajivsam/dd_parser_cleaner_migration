@@ -1,0 +1,15 @@
+{
+  "recommendation": {
+    "status": "SUCCESS",
+    "pillar": "D",
+    "strategy": "Clustering",
+    "guidance": "Use robust clustering that respects operational heterogeneity. Prefer spectral clustering with gap selection or HDBSCAN fallback when appropriate.",
+    "reference": "/home/rajiv/programming/kmds_migration/olist_migration/documents/modeling_recommendations/clustering_recommendations.md"
+  },
+  "profile": {
+    "row_count": 52,
+    "feature_count": 9368,
+    "entity_count": 0,
+    "id_like_columns": 0
+  }
+}

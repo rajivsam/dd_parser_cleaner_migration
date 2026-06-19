@@ -1,0 +1,132 @@
+{
+  "columns": {
+    "order_id": {
+      "null_count": 0,
+      "null_ratio": 0.0,
+      "cardinality": 98666,
+      "logical_type": "text",
+      "is_mixed_type": false,
+      "samples": [
+        "00010242fe8c5a6d1ba2dd792cb16214",
+        "00018f77f2f0320c557190d7a144bdd3",
+        "000229ec398224ef6ca0657da4fc703e",
+        "00024acbcdf0a6daa1e931b038114c75",
+        "00042b26cf59d7ce69dfabb4e55b4fd9"
+      ]
+    },
+    "customer_id": {
+      "null_count": 0,
+      "null_ratio": 0.0,
+      "cardinality": 98666,
+      "logical_type": "text",
+      "is_mixed_type": false,
+      "samples": [
+        "3ce436f183e68e07877b285a838db11a",
+        "f6dd3ec061db4e3987629fe6b26e5cce",
+        "6489ae5e4333f3693df5ad4372dab6d3",
+        "d4eb9395c8c0431ee92fce09860c5a06",
+        "58dbd0b2d70206bf40e62cd34e84d795"
+      ]
+    },
+    "order_purchase_timestamp": {
+      "null_count": 0,
+      "null_ratio": 0.0,
+      "cardinality": 98112,
+      "logical_type": "datetime",
+      "is_mixed_type": false,
+      "samples": [
+        "2017-09-13 08:59:02",
+        "2017-04-26 10:53:06",
+        "2018-01-14 14:33:31",
+        "2018-08-08 10:00:35",
+        "2017-02-04 13:57:51"
+      ]
+    },
+    "order_item_id": {
+      "null_count": 0,
+      "null_ratio": 0.0,
+      "cardinality": 21,
+      "logical_type": "numeric",
+      "is_mixed_type": false,
+      "samples": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    "product_id": {
+      "null_count": 0,
+      "null_ratio": 0.0,
+      "cardinality": 32951,
+      "logical_type": "text",
+      "is_mixed_type": false,
+      "samples": [
+        "4244733e06e7ecb4970a6e2683c13e61",
+        "e5f2d52b802189ee658865ca93d83a8f",
+        "c777355d18b72b67abbeef9df44fd0fd",
+        "7634da152a4610f1595efa32f14722fc",
+        "ac6c3623068f30de03045865e4e10089"
+      ]
+    },
+    "price": {
+      "null_count": 0,
+      "null_ratio": 0.0,
+      "cardinality": 5968,
+      "logical_type": "numeric",
+      "is_mixed_type": false,
+      "samples": [
+        "58.9",
+        "239.9",
+        "199.0",
+        "12.99",
+        "199.9"
+      ]
+    },
+    "customer_zip_code_prefix": {
+      "null_count": 0,
+      "null_ratio": 0.0,
+      "cardinality": 14976,
+      "logical_type": "numeric",
+      "is_mixed_type": false,
+      "samples": [
+        "28013",
+        "15775",
+        "35661",
+        "12952",
+        "13226"
+      ]
+    },
+    "customer_city": {
+      "null_count": 0,
+      "null_ratio": 0.0,
+      "cardinality": 4110,
+      "logical_type": "text",
+      "is_mixed_type": false,
+      "samples": [
+        "campos dos goytacazes",
+        "santa fe do sul",
+        "para de minas",
+        "atibaia",
+        "varzea paulista"
+      ]
+    },
+    "customer_state": {
+      "null_count": 0,
+      "null_ratio": 0.0,
+      "cardinality": 27,
+      "logical_type": "categorical",
+      "is_mixed_type": false,
+      "samples": [
+        "RJ",
+        "SP",
+        "MG",
+        "PR",
+        "GO"
+      ]
+    }
+  },
+  "row_count": 112650,
+  "timestamp": "2026-06-18 09:39:17"
+}

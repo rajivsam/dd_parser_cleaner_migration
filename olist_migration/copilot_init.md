@@ -1,0 +1,96 @@
+# Project Initialization Helper
+
+This file captures the current workspace setup and the commands needed to reinitialize and continue work in the Olist migration project.
+
+## Project Context
+
+- Repository: `olist_migration`
+- Primary use-case: Olist temporal affinity analytics for São Paulo 2017
+- Main data flow:
+  - `dd_parser_cleaner` parsing and cleaning
+  - featurization pipeline driven by `featurizer_config.yaml`
+  - clustering modeling pipeline driven by `modeling_config.yaml`
+- Key focus: product-week affinity for SP 2017 using KMDS featurization outputs
+
+## Important files
+
+- `config.yaml` — main KMDS workspace configuration
+- `customer_config.yaml` — parser/cleaner config for customer metadata
+- `featurizer_config.yaml` — featurization pipeline configuration
+- `modeling_config.yaml` — local clustering model configuration
+- `data/SP_2017_freq_prod_weekly_sales_prepared.csv` — SP 2017 product-week affinity matrix
+- `documents/olist_featurization_pipeline.md` — featurization pipeline documentation
+- `agent_documents/olist_temporal_affinity_analytics_for_SP.md` — use case summary
+- `agent_documents/clustering_task_initialization.md` — clustering task template
+- `agent_documents/agent_instructions_for_clustering.md` — agent-facing clustering guidelines
+- `notebooks/modeling_spectral_clustering.ipynb` — clustering model execution and visualization
+- `notebooks/modeling_clustering_advisor.ipynb` — clustering advisor execution
+- `models/spectral_clustering.py` — spectral clustering implementation
+- `models/clustering_advisor.py` — advisor wrapper for cluster profiling
+
+## Environment setup
+
+```bash
+cd /home/rajiv/programming/kmds_migration/olist_migration
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt  # if present
+pip install pyarrow
+pip install kmds-modeling
+``` 
+
+If you already have the venv, just activate it:
+
+```bash
+cd /home/rajiv/programming/kmds_migration/olist_migration
+source .venv/bin/activate
+```
+
+## Recommended workflow
+
+1. Run parser + cleaner for customer or orders data as needed:
+   ```bash
+   .venv/bin/classify-entities --config customer_config.yaml
+   .venv/bin/clean-dataset --config customer_config.yaml --action full
+   .venv/bin/classify-entities --config config.yaml
+   .venv/bin/clean-dataset --config config.yaml --action full
+   ```
+2. Run the featurization pipeline:
+   ```bash
+   python featurization_scripts/featurization.py
+   ```
+3. Validate the SP 2017 prepared artifact:
+   ```bash
+   ls data/SP_2017_freq_prod_weekly_sales_prepared.csv
+   ```
+4. Run the clustering model:
+   ```bash
+   .venv/bin/python -c "from models.spectral_clustering import run_spectral_clustering; print(run_spectral_clustering('modeling_config.yaml', output_dir='models'))"
+   ```
+5. Run the clustering advisor:
+   ```bash
+   .venv/bin/python -c "from models.clustering_advisor import run_clustering_advisor; print(run_clustering_advisor('modeling_config.yaml'))"
+   ```
+6. Open the notebooks for inspection:
+   - `notebooks/modeling_spectral_clustering.ipynb`
+   - `notebooks/modeling_clustering_advisor.ipynb`
+
+## Key artifacts to inspect
+
+- `models/spectral_gap.csv`
+- `models/week_clusters.csv`
+- `models/product_clusters.csv`
+- `models/cluster_counts.csv`
+- `models/week_embeddings.csv`
+- `models/product_embeddings.csv`
+- `models/spectral_clustering_summary.md`
+- `models/advisor/clustering_advisor_recommendation.json`
+
+## Notes for next session
+
+- Always start from the workspace root.
+- Use `modeling_config.yaml` for the clustering workflow; it is the single source of truth for modeling inputs.
+- If the notebook imports fail, ensure `sys.path` includes the workspace root or run a notebook kernel from the project root.
+- The clustering workflow is driven by the prepared SP 2017 week-product matrix and the spectral co-clustering implementation in `models/`.
+- Use `agent_documents/agent_instructions_for_clustering.md` for agent-facing implementation guidance.
+- Keep `data/SP_2017_freq_prod_weekly_sales_prepared.csv` as the canonical affinity input for this project.

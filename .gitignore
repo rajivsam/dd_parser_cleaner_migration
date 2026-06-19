@@ -15,6 +15,14 @@ output/
 path/
 workspaces/
 
+# Large Olist migration data artifacts
+olist_migration/data/olist_*_dataset_raw.csv
+olist_migration/data/olist_*_dataset.csv
+olist_migration/data/olist_2_year_*.csv
+olist_migration/data/SP_2017_*.csv
+olist_migration/data/*.parquet
+olist_migration/data/dd_cleaner/*.csv
+
 # Local experiment and toolkit artifacts
 data/KMDS/
 .continueignore

@@ -1,0 +1,15 @@
+attribute,description
+order_id,Unique identifier for each order in the Olist dataset.
+customer_id,Customer identifier assigned by Olist; a single customer may have multiple orders.
+order_purchase_timestamp,Timestamp when the order was placed.
+order_item_id,Line item number inside the order; orders may contain multiple items.
+product_id,Unique identifier for the ordered product.
+price,Sale price paid for the order item.
+customer_zip_code_prefix,Customer postal code prefix (Brazilian ZIP prefix).
+customer_city,Customer city name from the customer record.
+customer_state,Two-letter Brazilian state code for the customer (e.g. SP for São Paulo).
+freq_cust,Binary indicator derived during preparation; reflects whether the customer is classified as frequent/repeat.
+freq_purch_prod,Binary indicator derived during preparation; reflects whether the product is classified as a frequent purchase.
+year,Year extracted from `order_purchase_timestamp`.
+month,Month extracted from `order_purchase_timestamp`.
+woy,ISO week-of-year extracted from `order_purchase_timestamp`.
