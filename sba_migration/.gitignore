@@ -13,6 +13,28 @@ wheels/
 # Jupyter
 .ipynb_checkpoints/
 
+# Ignore compiled Python bytecode
+*.pyc
+# Ignore virtual environment directories
+__pycache__/
+
+# Ignore .continue assets
+.continue
+
+# Ignore temporary files
+*~
+
+# Ignore editor backups
+*~*
+
+# Ignore package cache
+.cache/
+
+# Ignore distribution archives
+*.tar.gz
+*.zip
+*.whl
+
 # Generated/output directories
 output/
 path/
@@ -27,3 +49,10 @@ data/dd_cleaner/sba_loans_raw_clean.csv
 data/dd_cleaner/sba_loans_user_cleaned.csv
 data/featurization/featurized_data.csv
 data/featurization/model_ready_numeric_data.csv
+
+
+# Beads / Dolt files (added by bd init)
+.dolt/
+*.db
+.beads-credential-key
+.beads/proxieddb/
