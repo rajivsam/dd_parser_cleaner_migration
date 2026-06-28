@@ -1,5 +1,4 @@
 ---
-
 ## The Reality of Inventory Segmentation as an SCM Problem
 
 In modern retail and manufacturing, companies manage thousands or millions of SKUs across multiple distribution centers. Treating all products identically is financially impossible and operationally inefficient. [3, 6, 7, 8, 9]
@@ -7,9 +6,7 @@ In modern retail and manufacturing, companies manage thousands or millions of SK
 According to insights published by the [Association for Supply Chain Management](https://www.ascm.org/), managing highly variable, seasonal demand patterns across huge distribution networks requires advanced segmentation to [dynamically rationalize the inventory mix and set proper stocking targets](https://www.ascm.org/ascm-insights/what-can-machine-learning-do-for-your-supply-chain/).
 
 Failures in this area result in what professionals call the “long tail” inventory trap, where an unmanaged range of products inflates warehouse costs while failing to satisfy core consumer demand. [8, 10, 11]
-
 ---
-
 ## Machine Learning vs. Static ABC Analysis
 
 While traditional ABC Analysis scales inventory focus strictly based on a single parameter (typically total revenue or transaction volume via the 80/20 Pareto principle), it struggles in modern enterprise environments. [3, 12, 13]
